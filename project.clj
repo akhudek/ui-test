@@ -26,6 +26,7 @@
             [lein-sassc "0.10.4"]]
 
   :clean-targets ^{:protect false} ["resources/public/js/compiled"
+                                    "resources/public/css/ui_test_style.css"
                                     "target"]
 
   :source-paths ["src"]
