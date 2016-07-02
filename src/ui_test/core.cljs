@@ -34,7 +34,7 @@
      :render (fn [] [:div [:div icon] [(:render input)]])}))
 
 (defcard simple-input-example
-  (let [input (simple-input "foo" {})]
+  (let [input (simple-input "fooo" {})]
     (r/as-element [(:render input)])))
 
 (defcard login-example
@@ -60,4 +60,3 @@
 
 ;; remember to run lein figwheel and then browse to
 ;; http://localhost:3449/cards.html
-
