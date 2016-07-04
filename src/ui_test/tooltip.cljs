@@ -9,6 +9,19 @@
 
 (enable-console-print!)
 
+;; This example is a bit ugly, but I couldn't see a better way. Follow the previous
+;; om implementation, this uses a single "tooltip" element that gets reused for every
+;; tooltip. However, instead of writing it as a mixin, it now wraps the component
+;; you want the tooltip on.
+
+;; Additionally, it supports fading in by first positioning the tooltip, then
+;; subsequently toggling a class that initiates the fade in. Fading out is a bit
+;; more complex, as if you move the tip out of position before the fade is done you
+;; won't see the fade. So far this, we use a second timer that moves the tooltip back
+;; to the initial off screen position after a delay. It's also possible to tweak this
+;; so that it only has a delay on mouse-leave, and instantly moves on component
+;; destruction.
+
 (def initial-state {:top -1000 :left -1000 :msg "" :positioned false :visible false})
 (def tooltip-state (r/atom initial-state))
 (def tooltip-timer (r/atom nil))
