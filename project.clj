@@ -6,19 +6,15 @@
 
   :min-lein-version "2.5.3"
 
-  :dependencies [[org.clojure/clojure "1.8.0"]
-                 [org.clojure/clojurescript "1.8.51"]
-                 [devcards "0.2.1-7"]
-                 [sablono "0.7.1"]
-
-                 ;; need to specify this for sablono
-                 ;; when not using devcards
-                 [cljsjs/react "15.0.2-0"]
+  :dependencies [[cljsjs/react "15.0.2-0"]
                  [cljsjs/react-dom "15.0.2-0"]
                  [cljsjs/react-dom-server "15.0.2-0"]
-                 #_[org.omcljs/om "0.9.0"]
+                 [devcards "0.2.1-7"]
+                 [org.clojure/clojure "1.8.0"]
+                 [org.clojure/clojurescript "1.8.51"]
+                 [prismatic/dommy "1.1.0"]
                  [reagent "0.6.0-rc"]
-                 ]
+                 [sablono "0.7.1"]]
 
   :plugins [[lein-figwheel "0.5.3-2"]
             [lein-cljsbuild "1.1.3" :exclusions [org.clojure/clojure]]

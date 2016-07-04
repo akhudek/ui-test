@@ -2,7 +2,10 @@
   (:require
     [reagent.core :as r]
     [sablono.core :as sab :include-macros true]
-    ui-test.table)
+    [ui-test.component :as c]
+    ui-test.table
+    ui-test.checkbox
+    ui-test.tooltip)
   (:require-macros
     [devcards.core :as dc :refer [defcard deftest]]))
 
@@ -18,24 +21,25 @@
 (defn simple-input
   [initial-value opts]
   (let [s {:text (r/atom initial-value)}]
-    {:state s
-     :render
+    (c/->Component
+      s
      (fn []
-      [:input {:class (or (:class opts) "")
-               :type (or (:type opts) "text")
-               :on-blur #(when-let [f (:on-blur opts)] (f % s))
-               :value @(:text s)
-               :on-change #(reset! (:text s) (-> % .-target .-value))}])}))
+       [:input {:class (or (:class opts) "")
+                :type (or (:type opts) "text")
+                :on-blur #(when-let [f (:on-blur opts)] (f % s))
+                :value @(:text s)
+                :on-change #(reset! (:text s) (-> % .-target .-value))}]))))
 
 (defn input-with-icon
   [icon opts]
   (let [input (simple-input "" opts)]
-    {:state  (:state input)
-     :render (fn [] [:div [:div icon] [(:render input)]])}))
+    (c/->Component
+      (:state input)
+      (fn [] [:div [:div icon] (c/render input)]))))
 
 (defcard simple-input-example
   (let [input (simple-input "fooo" {})]
-    (r/as-element [(:render input)])))
+    (r/as-element (c/render input))))
 
 (defcard login-example
   (let [;input1 (simple-input "" {:on-blur (fn [e s] (println "blur" s))})
@@ -43,8 +47,8 @@
         input2 (input-with-icon "pass" {:type "password"})]
     (r/as-element
       [:div
-       [(:render input1)]
-       [(:render input2)]
+       (c/render input1)
+       (c/render input2)
        [:button {:on-click #(do
                              (println "submitting")
                              (println @(:text (:state input1)))

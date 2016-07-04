@@ -1,3 +1,12 @@
 input {
   border-color: red;
 }
+
+
+div.tooltip {
+  transition: opacity 0.5s ease;
+  opacity:0;
+  &.show {
+    opacity:1;
+  }
+}
