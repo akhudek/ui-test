@@ -5,7 +5,8 @@
     [ui-test.component :as c]
     ui-test.table
     ui-test.checkbox
-    ui-test.tooltip)
+    ui-test.tooltip
+    ui-test.dropdown)
   (:require-macros
     [devcards.core :as dc :refer [defcard deftest]]))
 
