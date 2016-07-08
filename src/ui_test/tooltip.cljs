@@ -98,4 +98,4 @@
 
 (defcard tooltip-example
   (r/as-element
-    [:div [(with-tooltip "A helpful message.") [example-div "foo"]]]))
+    [:div [with-tooltip "A helpful message." [example-div "foo"]]]))
