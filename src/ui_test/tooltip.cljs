@@ -2,8 +2,7 @@
   (:require
     [dommy.core :as dom]
     [reagent.core :as r]
-    [sablono.core :as sab :include-macros true]
-    [ui-test.component :as c])
+    [sablono.core :as sab :include-macros true])
   (:require-macros
     [devcards.core :as dc :refer [defcard deftest]]))
 
@@ -71,30 +70,25 @@
   (start-hide-timer!))
 
 (defn with-tooltip
-  [component message]
+  [message]
   (let [node (r/atom nil)]
-    (c/->Component
-     (:state component)
-       (fn []
-        (r/create-class
-          {:component-will-unmount
-           #(reset-tooltip!)
-           :component-did-mount
-           (fn [this] (reset! node (r/dom-node this)))
-           :component-did-update
-           (fn [this old-argv]
-             (println @tooltip-state))
-           :reagent-render
-           (fn [& args]
-             [:div {:on-mouse-enter #(start-timer! (fn []
-                                                     (swap! tooltip-state assoc :msg message)
-                                                     (set-position! @node)))
-                    :on-mouse-leave #(reset-tooltip!)}
-              (apply c/render component args)])})))))
+    (fn []
+      (r/create-class
+        {:component-will-unmount
+         #(reset-tooltip!)
+         :component-did-mount
+         (fn [this] (reset! node (r/dom-node this)))
+         :reagent-render
+         (fn [component]
+           [:div {:on-mouse-enter #(start-timer! (fn []
+                                                   (swap! tooltip-state assoc :msg message)
+                                                   (set-position! @node)))
+                  :on-mouse-leave #(reset-tooltip!)}
+            component])}))))
 
 (defn example-div
-  []
-  (c/->Component nil (fn [] [:div "I have a tooltip"])))
+  [msg]
+  [:div (str "I have a tooltip" msg)])
 
 (defcard tooltip-base
   "This renders the base tooltip. It's positioned as *fixed* so that it always offsets from the
@@ -103,7 +97,5 @@
   (r/as-element [tooltip-base]))
 
 (defcard tooltip-example
-  (let [my-comp (-> (example-div)
-                    (with-tooltip "A helpful message."))]
-    (r/as-element
-      [:div (c/render my-comp)])))
+  (r/as-element
+    [:div [(with-tooltip "A helpful message.") [example-div "foo"]]]))
